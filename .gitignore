@@ -32,4 +32,9 @@ build/
 .env.local
 
 # Log files
-*.log 
+*.log
+
+# Local analysis
+Dashboard-Analysis/
+.gstack/
+data.local.json
