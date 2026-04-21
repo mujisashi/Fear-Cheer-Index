@@ -110,12 +110,6 @@ QUERY_METRICS = {
                 "op": "histogram",
                 "field": "published",
                 "interval": "day",
-                "aggs": {
-                    "sentiment": {
-                        "op": "keyword",
-                        "field": "sentiment"
-                    }
-                }
             },
             "sentiment": {
                 "op": "keyword",
@@ -144,11 +138,11 @@ QUERY_METRICS = {
                 "op": "histogram",
                 "field": "published",
                 "interval": "day",
+            },
+            "sentiment": {
+                "op": "keyword",
+                "field": "sentiment"
             }
-        },
-        "sentiment": {
-            "op": "keyword",
-            "field": "sentiment"
         }
     }
 }
