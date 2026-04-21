@@ -23,6 +23,7 @@ from update_data import (
 )
 
 OUTPUT_FILE = "data.local.json"
+OUTPUT_JS = "data.local.js"
 
 
 def build_payload(metric_data):
@@ -81,6 +82,10 @@ def main():
     data = build_payload(metric_data)
     with open(OUTPUT_FILE, "w") as f:
         json.dump(data, f, indent=4)
+    with open(OUTPUT_JS, "w") as f:
+        f.write("window.FCI_DATA = ")
+        json.dump(data, f)
+        f.write(";\n")
     print_summary(data)
 
 

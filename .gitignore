@@ -38,3 +38,4 @@ build/
 Dashboard-Analysis/
 .gstack/
 data.local.json
+data.local.js
