@@ -117,7 +117,7 @@ QUERY_METRICS = {
             }
         }
     },
-    "q_yyQWpqeTiAj": {
+    "q_dQmy5bWuwp4": {
         "metric_name": "layoffMentions",
         "aggs": {
             "daily_volume": {
