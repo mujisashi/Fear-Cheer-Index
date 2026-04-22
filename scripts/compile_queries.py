@@ -30,6 +30,13 @@ def load_bucket(name):
     return terms
 
 
+SENTIMENT_MAP = {
+    "positive": ("Positive", "p"),
+    "negative": ("Negative", "n"),
+    "neutral": ("Neutral", "u"),
+}
+
+
 def expand(node, buckets):
     if "bucket" in node:
         return {
@@ -49,12 +56,30 @@ def expand(node, buckets):
         return {"op": "contains", "field": "themes", "values": node["themes"]}
     if "taxonomies" in node:
         return {"op": "contains", "field": "taxonomies", "values": node["taxonomies"]}
-    if node.get("op") in ("and", "or"):
+    if "country" in node:
+        return {"op": "contains", "field": "country", "value": node["country"]}
+    if "sentiment" in node:
+        label, value = SENTIMENT_MAP[node["sentiment"]]
+        return {
+            "op": "contains",
+            "fields": ["sentiment"],
+            "labels": [label],
+            "values": [value],
+        }
+    if node.get("op") in ("and", "or", "not"):
         return {
             "op": node["op"],
             "values": [expand(v, buckets) for v in node["values"]],
         }
     raise ValueError(f"Unrecognized composition node: {node}")
+
+
+def apply_globals(body, globals_nodes):
+    if not globals_nodes:
+        return body
+    if body.get("op") == "and":
+        return {"op": "and", "values": body["values"] + globals_nodes}
+    return {"op": "and", "values": [body] + globals_nodes}
 
 
 def serialize(obj):
@@ -82,12 +107,16 @@ def main():
 
     for q in composition["queries"].values():
         collect(q)
+    for g in composition.get("globals", []):
+        collect(g)
     buckets = {name: load_bucket(name) for name in referenced}
+
+    globals_nodes = [expand(g, buckets) for g in composition.get("globals", [])]
 
     drift = []
     for name, spec in composition["queries"].items():
         out_path = QUERIES_DIR / f"{name}.json"
-        rendered = serialize(expand(spec, buckets))
+        rendered = serialize(apply_globals(expand(spec, buckets), globals_nodes))
         if args.check:
             current = out_path.read_text() if out_path.exists() else ""
             if current != rendered:
