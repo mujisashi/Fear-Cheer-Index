@@ -37,6 +37,14 @@ def expand(node, buckets):
             "fields": ["body", "title"],
             "values": buckets[node["bucket"]],
         }
+    if "bucket_labeled" in node:
+        terms = buckets[node["bucket_labeled"]]
+        return {
+            "op": "contains",
+            "fields": ["title", "body"],
+            "labels": terms,
+            "values": terms,
+        }
     if "themes" in node:
         return {"op": "contains", "field": "themes", "values": node["themes"]}
     if "taxonomies" in node:
@@ -66,6 +74,8 @@ def main():
     def collect(node):
         if "bucket" in node:
             referenced.add(node["bucket"])
+        if "bucket_labeled" in node:
+            referenced.add(node["bucket_labeled"])
         for child in node.get("values", []):
             if isinstance(child, dict):
                 collect(child)
