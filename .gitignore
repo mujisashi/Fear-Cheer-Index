@@ -50,3 +50,5 @@ queries/composition.json
 queries/keywords/
 queries/*.json
 docs/starscape-queries-pre-restructure/
+scripts/compile_queries.py
+docs/superpowers/
