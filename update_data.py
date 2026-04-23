@@ -61,7 +61,6 @@ BASE_QUERY = {
                 {
                     "op": "contains",
                     "fields": ["title", "body"],
-                    "labels": DISCLAIMER_BLOCKLIST,
                     "values": DISCLAIMER_BLOCKLIST
                 }
             ]

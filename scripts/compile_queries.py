@@ -31,9 +31,9 @@ def load_bucket(name):
 
 
 SENTIMENT_MAP = {
-    "positive": ("Positive", "p"),
-    "negative": ("Negative", "n"),
-    "neutral": ("Neutral", "u"),
+    "positive": "p",
+    "negative": "n",
+    "neutral": "u",
 }
 
 
@@ -49,7 +49,6 @@ def expand(node, buckets):
         return {
             "op": "contains",
             "fields": ["title", "body"],
-            "labels": terms,
             "values": terms,
         }
     if "themes" in node:
@@ -59,11 +58,10 @@ def expand(node, buckets):
     if "country" in node:
         return {"op": "contains", "field": "country", "value": node["country"]}
     if "sentiment" in node:
-        label, value = SENTIMENT_MAP[node["sentiment"]]
+        value = SENTIMENT_MAP[node["sentiment"]]
         return {
             "op": "contains",
             "fields": ["sentiment"],
-            "labels": [label],
             "values": [value],
         }
     if node.get("op") in ("and", "or", "not"):
