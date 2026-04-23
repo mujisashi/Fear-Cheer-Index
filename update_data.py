@@ -33,7 +33,7 @@ def _load_disclaimer_blocklist():
 DISCLAIMER_BLOCKLIST = _load_disclaimer_blocklist()
 
 # Query IDs (swap these to repoint metrics at new Starscape queries)
-TOTAL_VOLUME_QUERY_ID = TOTAL_VOLUME_QUERY_ID
+TOTAL_VOLUME_QUERY_ID = "q_WoKuQA6Dr45"
 HOPE_QUERY_ID = "q_eT1MK2IoiMc"
 DESPAIR_QUERY_ID = "q_ghefZgLHgh4"
 ESI_QUERY_ID = "q_umyTj9rRaE4"
