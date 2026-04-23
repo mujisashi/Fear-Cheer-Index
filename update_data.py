@@ -32,6 +32,15 @@ def _load_disclaimer_blocklist():
 
 DISCLAIMER_BLOCKLIST = _load_disclaimer_blocklist()
 
+# Query IDs (swap these to repoint metrics at new Starscape queries)
+TOTAL_VOLUME_QUERY_ID = TOTAL_VOLUME_QUERY_ID
+HOPE_QUERY_ID = "q_eT1MK2IoiMc"
+DESPAIR_QUERY_ID = "q_ghefZgLHgh4"
+ESI_QUERY_ID = "q_umyTj9rRaE4"
+FINANCIAL_ANXIETY_QUERY_ID = "q_BmuWhdVqEd4"
+LAYOFF_MENTIONS_QUERY_ID = "q_dQmy5bWuwp4"
+CONSUMER_BEHAVIOR_QUERY_ID = "q_3G5HeNu0XK6"
+
 BASE_QUERY = {
     "op": "and",
     "values": [
@@ -70,7 +79,7 @@ BASE_QUERY = {
 
 # Query IDs and their corresponding metrics and aggregations
 QUERY_METRICS = {
-    "q_WoKuQA6Dr45": {
+    TOTAL_VOLUME_QUERY_ID: {
         "metric_name": "Total Volume",
         "aggs": {
             "daily_volume": {
@@ -80,7 +89,7 @@ QUERY_METRICS = {
             }
         }
     },
-    "q_eT1MK2IoiMc": {
+    HOPE_QUERY_ID: {
         "metric_name": "hope",
         "aggs": {
             "daily_volume": {
@@ -94,7 +103,7 @@ QUERY_METRICS = {
             }
         }
     },
-    "q_ghefZgLHgh4": {
+    DESPAIR_QUERY_ID: {
         "metric_name": "despair",
         "aggs": {
             "daily_volume": {
@@ -108,7 +117,7 @@ QUERY_METRICS = {
             }
         }
     },
-    "q_umyTj9rRaE4": {
+    ESI_QUERY_ID: {
         "metric_name": "esi",
         "aggs": {
             "daily_volume": {
@@ -122,7 +131,7 @@ QUERY_METRICS = {
             }
         }
     },
-    "q_BmuWhdVqEd4": {
+    FINANCIAL_ANXIETY_QUERY_ID: {
         "metric_name": "financialAnxiety",
         "aggs": {
             "daily_volume": {
@@ -136,7 +145,7 @@ QUERY_METRICS = {
             }
         }
     },
-    "q_dQmy5bWuwp4": {
+    LAYOFF_MENTIONS_QUERY_ID: {
         "metric_name": "layoffMentions",
         "aggs": {
             "daily_volume": {
@@ -150,7 +159,7 @@ QUERY_METRICS = {
             }
         }
     },
-    "q_3G5HeNu0XK6": {
+    CONSUMER_BEHAVIOR_QUERY_ID: {
         "metric_name": "consumerBehavior",
         "aggs": {
             "daily_volume": {
@@ -180,7 +189,7 @@ def fetch_infegy_data(query_id):
         "query": BASE_QUERY
     }
     
-    url = API_URL if query_id == "q_WoKuQA6Dr45" else f"{API_URL}/{query_id}"
+    url = API_URL if query_id == TOTAL_VOLUME_QUERY_ID else f"{API_URL}/{query_id}"
     response = requests.post(url, json=payload, headers=headers)
     response.raise_for_status()
     return response.json()
@@ -334,10 +343,10 @@ def main():
         raw_counts = {}
         
         print("Fetching total volume data...")
-        total_volume_data = fetch_infegy_data("q_WoKuQA6Dr45")
+        total_volume_data = fetch_infegy_data(TOTAL_VOLUME_QUERY_ID)
         
         for query_id, query_config in QUERY_METRICS.items():
-            if query_id == "q_WoKuQA6Dr45":
+            if query_id == TOTAL_VOLUME_QUERY_ID:
                 continue
                 
             values, labels, counts, net_sentiment = process_query(query_id, total_volume_data)
