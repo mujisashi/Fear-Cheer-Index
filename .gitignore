@@ -39,3 +39,14 @@ Dashboard-Analysis/
 .gstack/
 data.local.json
 data.local.js
+data.local.json.orig
+
+# Claude / session artifacts
+.context/
+CLAUDE.md
+
+# Private query composition + keyword lists (do not push)
+queries/composition.json
+queries/keywords/
+queries/*.json
+docs/starscape-queries-pre-restructure/
