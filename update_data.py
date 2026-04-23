@@ -23,6 +23,15 @@ def get_api_token():
 
 API_TOKEN = get_api_token()
 
+
+def _load_disclaimer_blocklist():
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "queries", "keywords", "disclaimer_blocklist.txt")
+    with open(path) as f:
+        return [line.rstrip("\n") for line in f if line.strip()]
+
+
+DISCLAIMER_BLOCKLIST = _load_disclaimer_blocklist()
+
 BASE_QUERY = {
     "op": "and",
     "values": [
@@ -43,6 +52,16 @@ BASE_QUERY = {
                     "op": "contains",
                     "field": "channels",
                     "values": ["lexisnexis"]
+                }
+            ]
+        },
+        {
+            "op": "not",
+            "values": [
+                {
+                    "op": "contains",
+                    "fields": ["title", "body"],
+                    "values": DISCLAIMER_BLOCKLIST
                 }
             ]
         }
